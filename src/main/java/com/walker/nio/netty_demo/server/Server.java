@@ -1,11 +1,8 @@
-package com.walker.nio.netty_demo;
+package com.walker.nio.netty_demo.server;
 
+import com.walker.nio.netty_demo.server.handler.TimeServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoop;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -20,15 +17,15 @@ import lombok.extern.slf4j.Slf4j;
  * Discards any incoming data.
  */
 @Slf4j
-public class DiscardServer {
+public class Server {
 
     private int port;
 
-    public DiscardServer(int port) {
+    public Server(int port) {
         this.port = port;
     }
 
-    public void run() throws Exception {
+    public void run(final ChannelInboundHandler handler) throws Exception {
         EventLoopGroup bossGroup = new NioEventLoopGroup(); // (1)
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
@@ -38,7 +35,7 @@ public class DiscardServer {
                     .childHandler(new ChannelInitializer<SocketChannel>() { // (4)
                         @Override
                         public void initChannel(SocketChannel ch) throws Exception {
-                            ch.pipeline().addLast(new DiscardServerHandler());
+                            ch.pipeline().addLast(handler);
                         }
                     })
                     .option(ChannelOption.SO_BACKLOG, 128)          // (5)
@@ -64,6 +61,6 @@ public class DiscardServer {
         } else {
             port = 8080;
         }
-        new DiscardServer(port).run();
+        new Server(port).run(new TimeServerHandler());
     }
 }

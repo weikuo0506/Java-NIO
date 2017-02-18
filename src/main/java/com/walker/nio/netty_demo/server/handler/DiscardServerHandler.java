@@ -1,4 +1,4 @@
-package com.walker.nio.netty_demo;
+package com.walker.nio.netty_demo.server.handler;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
