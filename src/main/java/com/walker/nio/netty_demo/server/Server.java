@@ -1,6 +1,8 @@
 package com.walker.nio.netty_demo.server;
 
+import com.walker.nio.netty_demo.client.handler.UnixTimeEncoder;
 import com.walker.nio.netty_demo.server.handler.TimeServerHandler;
+import com.walker.nio.netty_demo.server.handler.UnixTimeServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -25,7 +27,7 @@ public class Server {
         this.port = port;
     }
 
-    public void run(final ChannelInboundHandler handler) throws Exception {
+    public void run(final ChannelHandler... handler) throws Exception {
         EventLoopGroup bossGroup = new NioEventLoopGroup(); // (1)
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
@@ -61,6 +63,6 @@ public class Server {
         } else {
             port = 8080;
         }
-        new Server(port).run(new TimeServerHandler());
+        new Server(port).run(new UnixTimeEncoder(),new UnixTimeServerHandler());
     }
 }

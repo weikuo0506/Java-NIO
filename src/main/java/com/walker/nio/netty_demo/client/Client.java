@@ -2,6 +2,8 @@ package com.walker.nio.netty_demo.client;
 
 import com.walker.nio.netty_demo.client.handler.TimeClientHandler;
 import com.walker.nio.netty_demo.client.handler.TimeDecoder;
+import com.walker.nio.netty_demo.client.handler.UnixTimeClientHandler;
+import com.walker.nio.netty_demo.client.handler.UnixTimeDecoder;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -44,6 +46,6 @@ public class Client {
         }
     }
     public static void main(String[] args) throws Exception {
-        new Client("localhost",8080).run(new TimeClientHandler(),new TimeDecoder());
+        new Client("localhost",8080).run(new UnixTimeDecoder(),new UnixTimeClientHandler());
     }
 }
